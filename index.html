@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Swingsets Release</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #0c0c0c, #1a1a2e, #16213e);
+            color: #ff3333;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            z-index: 10;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ff3333;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #ff3333;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #ff6666;
+            letter-spacing: 2px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .time-unit {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ff3333;
+            min-width: 100px;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+        }
+
+        .time-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff3333;
+        }
+
+        .time-label {
+            font-size: 1rem;
+            margin-top: 5px;
+            color: #ff9999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .album-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .album {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.7);
+            opacity: 0.8;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        .warning {
+            color: #ff9999;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 51, 51, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 51, 51, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .time-value {
+                font-size: 2rem;
+            }
+            
+            .time-unit {
+                min-width: 70px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="album-container" id="albumContainer"></div>
+    
+    <div class="container pulse">
+        <h1>COUNTDOWN UNTIL SWINGSETS RELEASES</h1>
+        <div class="subtitle">OCTOBER 21, 2025 - MIDNIGHT</div>
+        
+        <div class="countdown">
+            <div class="time-unit">
+                <div class="time-value" id="days">00</div>
+                <div class="time-label">Days</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">Hours</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">Minutes</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">Seconds</div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // Set the target date (October 21, 2025 at midnight)
+        const targetDate = new Date('October 21, 2025 00:00:00').getTime();
+        
+        // Album cover URL
+        const albumUrl = 'https://lastfm.freetls.fastly.net/i/u/avatar170s/0513e3ab7b672f9011ed072ccd5ca146';
+        
+        // Update the countdown every second
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            // Calculate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Display the results
+            document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
+            
+            // If the countdown is over
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.querySelector('.container').innerHTML = "<h1>SWINGSETS HAS ARRIVED!</h1>";
+            }
+        }, 1000);
+        
+        // Create flying album covers
+        function createAlbum() {
+            const albumContainer = document.getElementById('albumContainer');
+            const album = document.createElement('div');
+            album.className = 'album';
+            album.style.backgroundImage = `url('${albumUrl}')`;
+            
+            // Random position and animation duration
+            const startPosition = Math.random() * window.innerWidth;
+            const duration = 10 + Math.random() * 20; // 10-30 seconds
+            const size = 50 + Math.random() * 50; // 50-100px
+            
+            album.style.left = `${startPosition}px`;
+            album.style.width = `${size}px`;
+            album.style.height = `${size}px`;
+            album.style.animationDuration = `${duration}s`;
+            
+            albumContainer.appendChild(album);
+            
+            // Remove album after animation completes
+            setTimeout(() => {
+                album.remove();
+            }, duration * 1000);
+        }
+        
+        // Create albums periodically
+        setInterval(createAlbum, 500);
+        
+        // Create initial albums
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createAlbum, i * 300);
+        }
+    </script>
+</body>
+</html>
